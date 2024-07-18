@@ -55,6 +55,7 @@ const getUserData = function(data,idUser){
 
 // *Подсказка *
 // // Пример использования функции
+
 // const user = {
 // name: 'John Smith',
 // age: 30,
@@ -74,5 +75,33 @@ const getUserData = function(data,idUser){
 // о пользователе в JSON-строку с помощью JSON.stringify(). Если запрос успешен (с кодом 200), функция разрешает промис. 
 // Если запрос неуспешен, функция отклоняет промис с сообщением
 
+// как пример для отсыла данные
+const newUser = {
+    id: 10,
+    name: "Елена"
+};
 
+let data = new FormData();
+data.append("json", JSON.stringify(newUser));
+
+fetch("http://localhost:8000/saveUserData.json", {
+    method: "POST",
+    body: data
+}).then(function(response) {
+    
+    if (!response.ok) {
+        
+        return Promise.reject(new Error(
+            'Response failed: ' + response.status + ' (' + response.statusText + ')'
+        ));
+    }
+
+    return response.json();
+}).then(function(data) {
+    // ... Делаем что-то с данными.
+    console.log("Данные успешно сохранены");
+}).catch(function(error) {
+    // ... Обрабатываем ошибки.
+    console.log(error.message);
+});
 
